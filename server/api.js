@@ -49,7 +49,8 @@ apiRouter.put('/minions/:minionId', (req, res, next) => {
 })
 
 apiRouter.delete('/minions/:minionId', (req, res, next) => {
-    res.send('post minions')
+    db.deleteFromDatabasebyId('minions', req.minion.id)
+    res.status(204).send()
 })
 
 module.exports = apiRouter;
