@@ -34,5 +34,13 @@ ideasRouter.get('/:ideaId', (req, res, next) => {
     res.send(req.idea)
 })
 
+ideasRouter.put('/:ideaId', (req, res, next) => {
+    const updatedIdea = db.updateInstanceInDatabase('ideas', {
+        ...req.idea,
+        ...req.body
+    })
+    res.send(updatedIdea)
+})
+
 
 module.exports = ideasRouter
