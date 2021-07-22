@@ -3,6 +3,8 @@ const ideasRouter = express.Router({mergeParams: true})
 
 const db = require('./db')
 
+const checkMillionDollarIdea = require('./checkMillionDollarIdea')
+
 ideasRouter.param('ideaId', (req, res, next, id) => {
     const foundIdea = db.getFromDatabaseById('ideas', id)
     if (foundIdea) {
@@ -18,7 +20,7 @@ ideasRouter.get('/', (req, res, next) => {
     res.json(ideas)
 })
 
-ideasRouter.post('/', (req, res, next) => {
+ideasRouter.post('/', checkMillionDollarIdea, (req, res, next) => {
     const ideas = db.getAllFromDatabase('ideas')
     const newIdea = db.addToDatabase('ideas', {
         id: ideas.length + 1,
@@ -34,7 +36,7 @@ ideasRouter.get('/:ideaId', (req, res, next) => {
     res.send(req.idea)
 })
 
-ideasRouter.put('/:ideaId', (req, res, next) => {
+ideasRouter.put('/:ideaId', checkMillionDollarIdea, (req, res, next) => {
     const updatedIdea = db.updateInstanceInDatabase('ideas', {
         ...req.idea,
         ...req.body
