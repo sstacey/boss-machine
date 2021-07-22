@@ -19,15 +19,15 @@ apiRouter.post('/minions', (req, res, next) => {
             weaknesses,
             salary: Number(req.body.salary)
         })
-        res.send(newMinion)
+        res.json(newMinion)
     } else {
         res.status(500).send('Name and salary required to create new minion.')
     }
-    
 })
 
 apiRouter.get('/minions/:minionId', (req, res, next) => {
-    res.send('post minions')
+    const foundMinion = db.getFromDatabaseById('minions', req.params.minionId)
+    res.json(foundMinion)
 })
 
 apiRouter.put('/minions/:minionId', (req, res, next) => {
