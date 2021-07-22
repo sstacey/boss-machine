@@ -10,14 +10,20 @@ apiRouter.get('/minions', (req, res, next) => {
 
 apiRouter.post('/minions', (req, res, next) => {
     const minions = db.getAllFromDatabase('minions')
-    const addedNewMinion = db.addToDatabase('minions', {
-        id: minions.length + 1,
-        name: req.body.name,
-        title: req.body.title,
-        weaknesses: req.body.weaknesses,
-        salary: Number(req.body.salary)
-    })
-    res.send(addedNewMinion)
+    const { name, title, weaknesses, salary } = req.body
+    if (name && salary) {
+        const newMinion = db.addToDatabase('minions', {
+            id: minions.length + 1,
+            name,
+            title,
+            weaknesses,
+            salary: Number(req.body.salary)
+        })
+        res.send(newMinion)
+    } else {
+        res.status(500).send('Name and salary required to create new minion.')
+    }
+    
 })
 
 apiRouter.get('/minions/:minionId', (req, res, next) => {
