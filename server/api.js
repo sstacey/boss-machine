@@ -8,6 +8,16 @@ apiRouter.get('/minions', (req, res, next) => {
     res.json(minions)
 })
 
+apiRouter.param('minionId', (req, res, next, id) => {
+    const foundMinion = db.getFromDatabaseById('minions', req.params.minionId)
+    if (foundMinion) {
+        req.minion = foundMinion
+        next()
+    } else {
+        res.status(404).send()
+    }
+})
+
 apiRouter.post('/minions', (req, res, next) => {
     const minions = db.getAllFromDatabase('minions')
     const { name, title, weaknesses, salary } = req.body
@@ -26,8 +36,7 @@ apiRouter.post('/minions', (req, res, next) => {
 })
 
 apiRouter.get('/minions/:minionId', (req, res, next) => {
-    const foundMinion = db.getFromDatabaseById('minions', req.params.minionId)
-    res.json(foundMinion)
+        res.json(req.minion)
 })
 
 apiRouter.put('/minions/:minionId', (req, res, next) => {
