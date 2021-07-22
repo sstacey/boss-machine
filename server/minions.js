@@ -28,7 +28,7 @@ minionsRouter.post('/', (req, res, next) => {
             name,
             title,
             weaknesses,
-            salary: Number(req.body.salary)
+            salary: Number(salary)
         })
         res.status(201).json(newMinion)
     } else {
