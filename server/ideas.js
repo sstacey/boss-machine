@@ -42,5 +42,9 @@ ideasRouter.put('/:ideaId', (req, res, next) => {
     res.send(updatedIdea)
 })
 
+ideasRouter.delete('/:ideaId', (req, res, next) => {
+    db.deleteFromDatabasebyId('ideas', req.idea.id)
+    res.status(204).send()
+})
 
 module.exports = ideasRouter
