@@ -3,11 +3,6 @@ const apiRouter = express.Router();
 
 const db = require('./db')
 
-apiRouter.get('/minions', (req, res, next) => {
-    const minions = db.getAllFromDatabase('minions')
-    res.json(minions)
-})
-
 apiRouter.param('minionId', (req, res, next, id) => {
     const foundMinion = db.getFromDatabaseById('minions', req.params.minionId)
     if (foundMinion) {
@@ -17,6 +12,12 @@ apiRouter.param('minionId', (req, res, next, id) => {
         res.status(404).send()
     }
 })
+
+apiRouter.get('/minions', (req, res, next) => {
+    const minions = db.getAllFromDatabase('minions')
+    res.json(minions)
+})
+
 
 apiRouter.post('/minions', (req, res, next) => {
     const minions = db.getAllFromDatabase('minions')
@@ -29,7 +30,7 @@ apiRouter.post('/minions', (req, res, next) => {
             weaknesses,
             salary: Number(req.body.salary)
         })
-        res.json(newMinion)
+        res.status(201).json(newMinion)
     } else {
         res.status(500).send('Name and salary required to create new minion.')
     }
@@ -40,7 +41,11 @@ apiRouter.get('/minions/:minionId', (req, res, next) => {
 })
 
 apiRouter.put('/minions/:minionId', (req, res, next) => {
-    res.send('post minions')
+    const updatedMinion = db.updateInstanceInDatabase('minions', {
+        ...req.minion,
+        ...req.body
+    })
+    res.json(updatedMinion)
 })
 
 apiRouter.delete('/minions/:minionId', (req, res, next) => {
