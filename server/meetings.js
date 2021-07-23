@@ -9,7 +9,7 @@ meetingsRouter.get('/', (req, res, next) => {
 })
 
 meetingsRouter.post('/', (req, res, next) => {
-    const newMeeting = db.createMeeting({...req.body})
+    const newMeeting = db.addToDatabase('meetings', db.createMeeting())
     res.status(201).send(newMeeting)
 })
 

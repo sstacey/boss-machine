@@ -3,7 +3,7 @@ const checkMillionDollarIdea = (req, res, next) => {
     if (revenue >= 1000000) {
         next()
     } else {
-        res.status(500).send('Idea not worth 1M!  Try again.')
+        res.status(400).send('Idea not worth 1M!  Try again.')
     }
 };
 
