@@ -79,11 +79,15 @@ minionsRouter.post('/:minionId/work', (req, res, next) => {
 })
 
 minionsRouter.put('/:minionId/work/:workId', (req, res, next) => {
-    const updatedWork = db.updateInstanceInDatabase('work', {
-        ...req.work,
-        ...req.body
-    })
-    res.send(updatedWork)
+    if (req.minion.id === req.work.minionId) {
+        const updatedWork = db.updateInstanceInDatabase('work', {
+            ...req.work,
+            ...req.body
+        })
+        res.send(updatedWork)
+    } else {
+        res.status(400).send()
+    }   
 })
 
 minionsRouter.delete('/:minionId/work/:workId', (req, res, next) => {

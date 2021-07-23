@@ -174,7 +174,7 @@ describe('/api/minions routes', function() {
       let newMinionObject = {
         name: 'Test',
         title: '',
-        salary: 0,
+        salary: 1,
         weaknesses: '',
       }
       return request(app)
@@ -686,7 +686,7 @@ describe('/api/meetings routes', function() {
 
 });
 
-xdescribe('BONUS: /api/minions/:minionId/work routes', function() {
+describe('BONUS: /api/minions/:minionId/work routes', function() {
 
   let fakeDb = require('../server/db.js').db;
   
