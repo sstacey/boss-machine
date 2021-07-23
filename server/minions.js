@@ -13,6 +13,16 @@ minionsRouter.param('minionId', (req, res, next, id) => {
     }
 })
 
+minionsRouter.param('workId', (req, res, next, id) => {
+    const foundWork = db.getFromDatabaseById('work', req.params.workId)
+    if (foundWork) {
+        req.work = foundWork
+        next()
+    } else {
+        res.status(404).send()
+    }
+})
+
 minionsRouter.get('/', (req, res, next) => {
     const minions = db.getAllFromDatabase('minions')
     res.json(minions)
@@ -50,6 +60,34 @@ minionsRouter.put('/:minionId', (req, res, next) => {
 
 minionsRouter.delete('/:minionId', (req, res, next) => {
     db.deleteFromDatabasebyId('minions', req.minion.id)
+    res.status(204).send()
+})
+
+minionsRouter.get('/:minionId/work', (req, res, next) => {
+    const workList = db.getAllFromDatabase('work').filter((work) => work.minionId === req.minion.id)
+    res.json(workList)
+})
+
+minionsRouter.post('/:minionId/work', (req, res, next) => {
+    const id = db.getAllFromDatabase('work').length + 1
+    const newWork = db.addToDatabase('work', {
+        id,
+        ...req.body,
+        hours: Number(req.body.hours)
+    })
+    res.status(201).json(newWork)
+})
+
+minionsRouter.put('/:minionId/work/:workId', (req, res, next) => {
+    const updatedWork = db.updateInstanceInDatabase('work', {
+        ...req.work,
+        ...req.body
+    })
+    res.send(updatedWork)
+})
+
+minionsRouter.delete('/:minionId/work/:workId', (req, res, next) => {
+    db.deleteFromDatabasebyId('work', req.work.id)
     res.status(204).send()
 })
 
